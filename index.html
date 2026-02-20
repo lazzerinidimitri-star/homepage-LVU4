@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard LVU4</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            --hover-gradient: linear-gradient(135deg, #203a43, #2c5364, #0f2027);
+            --accent-color: #0099ff;
+            --text-white: #ffffff;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            width: 100%;
+            background: #000;
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-white);
+            overflow-x: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 100px;
+        }
+
+        header {
+            padding: 40px 20px 20px 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        header img {
+            max-width: 280px;
+            height: auto;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+        }
+
+        h1 {
+            font-size: clamp(22px, 4vw, 32px);
+            margin-top: 20px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Barra di ricerca */
+        .search-container {
+            width: 90%;
+            max-width: 500px;
+            margin-bottom: 40px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 1px solid #444;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        #searchInput:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 153, 255, 0.3);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .grid-container {
+            display: grid;
+            width: 90%;
+            max-width: 1400px;
+            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            justify-content: center;
+        }
+
+        .link-card {
+            border-radius: 18px;
+            text-decoration: none;
+            color: var(--text-white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            aspect-ratio: 1;
+            background: var(--primary-gradient);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 153, 255, 0.3);
+            background: var(--hover-gradient);
+            border-color: rgba(0, 153, 255, 0.5);
+        }
+
+        .img-wrapper {
+            width: 60%;
+            height: 60%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .img-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .link-card span {
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* Pulsante Email */
+        .email-button {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            color: #fff;
+            background: #0078d4;
+            border: none;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            z-index: 1000;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .email-button:hover {
+            background: #005a9e;
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 120, 212, 0.4);
+        }
+
+        .signature {
+            position: fixed;
+            bottom: 10px;
+            right: 15px;
+            font-size: 11px;
+            color: #666;
+            z-index: 999;
+        }
+
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            header { padding: 20px; }
+            h1 { margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://i.imgur.com/ZYChfzF.png" alt="Logo">
+    <h1>Home Page LVU4</h1>
+</header>
+
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Cerca un applicativo o documento..." onkeyup="filterLinks()">
+</div>
+
+<div class="grid-container" id="links"></div>
+
+<a href="mailto:d.lazzerini@rfi.it?subject=Aggiungi%20Link&body=Ciao%20Dimitri,%20potresti%20aggiungere%20il%20Link%20per" class="email-button">
+    <i class="fas fa-plus" style="margin-right: 8px;"></i> Proponi nuovo Link
+</a>
+
+<div class="signature">Created by Lazzerini Dimitri</div>
+
+<script>
+const links = [
+    { type:"text", name: "Tabellini delle Curve", url: "https://gruppofsitaliane.sharepoint.com/sites/RFI16/doit-fi/Documenti%20condivisi/Forms/AllItems.aspx?id=%2Fsites%2FRFI16%2Fdoit%2Dfi%2FDocumenti%20condivisi%2FTABELLINI%20CURVE%20DOIT%20FIRENZE&viewid=f52bc9fb%2D26da%2D4022%2Db6af%2D73a120efed32&csf=1&web=1&e=lUfiDU&siteid=%7B9F710921%2D6F38%2D4CD6%2DBFC6%2D5C366FF40A08%7D&webid=%7B4ABB3243%2D3901%2D4B72%2DBD73%2D06CEB09B651D%7D&uniqueid=%7BC826F84C%2DC90A%2D45AB%2D8084%2DD5C0D700CAD3%7D&FolderCTID=0x0120007749C7D629B18545A6DB9F573876ACA5" },
+    { type:"text", name: "Piani Schematici", url: "https://gruppofsitaliane.sharepoint.com/sites/RFI3/dtp-fi/firenze/Forms/AllItems.aspx?csf=1&web=1&e=MCcd6K&CID=354b53a0%2D30d1%2D42a2%2Db01d%2Dec71940dd4bb&FolderCTID=0x01200038E194A629A23440B3142FFB9ACED2F5&id=%2Fsites%2FRFI3%2Fdtp%2Dfi%2Ffirenze%2FDOIT%20FI%2FFunzionale%20CCS" },
+    { type:"text", name: "Profili Linee DOIT FI", url: "https://gruppofsitaliane.sharepoint.com/sites/RFI16/doit-fi/Documenti%20condivisi/Forms/AllItems.aspx?id=%2Fsites%2FRFI16%2Fdoit%2Dfi%2FDocumenti%20condivisi%2FPROFILI%20LINEE%20DOIT%20FI&viewid=f52bc9fb%2D26da%2D4022%2Db6af%2D73a120efed32&csf=1&web=1&e=lUfiDU&siteid=%7B9F710921%2D6F38%2D4CD6%2DBFC6%2D5C366FF40A08%7D&webid=%7B4ABB3243%2D3901%2D4B72%2DBD73%2D06CEB09B651D%7D&uniqueid=%7BC826F84C%2DC90A%2D45AB%2D8084%2DD5C0D700CAD3%7D&FolderCTID=0x0120007749C7D629B18545A6DB9F573876ACA5" },
+    { type:"text", name: "Planimetrie DOIT FI", url: "https://gruppofsitaliane.sharepoint.com/sites/RFI16/doit-fi/Documenti%20condivisi/Forms/AllItems.aspx?id=%2Fsites%2FRFI16%2Fdoit%2Dfi%2FDocumenti%20condivisi%2FPLANIMETRIE%20DOIT%20FIRENZE&viewid=f52bc9fb%2D26da%2D4022%2Db6af%2D73a120efed32&csf=1&web=1&e=lUfiDU&siteid=%7B9F710921%2D6F38%2D4CD6%2DBFC6%2D5C366FF40A08%7D&webid=%7B4ABB3243%2D3901%2D4B72%2DBD73%2D06CEB09B651D%7D&uniqueid=%7BC826F84C%2DC90A%2D45AB%2D8084%2DD5C0D700CAD3%7D&FolderCTID=0x0120007749C7D629B18545A6DB9F573876ACA5" },
+    { type:"img", name: "WE", url: "https://gruppofsitaliane.sharepoint.com/sites/we2/", img: "https://i.imgur.com/62N0jNK.png" },
+    { type:"img", name: "OneDrive", url: "https://gruppofsitaliane-my.sharepoint.com/my", img: "https://i.imgur.com/g2I1Q3X.png" },
+    { type:"img", name: "FS-Sign", url: "https://gosign.gruppofs.it/home", img: "https://i.imgur.com/uRZFz0U.png" },
+    { type:"img", name: "IMAN", url: "https://iman.rfi.it/rfiwfm/w/LoginServlet", img: "https://i.imgur.com/sed8XcC.png" },
+    { type:"img", name: "SAP", url: "https://inreteese-wd.rfi.it/sap/bc/gui/sap/its/webgui?sap-theme=sap_corbu#?sap-client=111", img: "https://i.imgur.com/cQyCRsP.png" },
+    { type:"img", name: "RUMO", url: "https://portalerfi.rfi.it/cube.eng~rumoweb/dispatch?actionName=homePage", img: "https://i.imgur.com/UaMvWaJ.png" },
+    { type:"img", name: "Plinio", url: "http://plinio.rfi.it/waysafety-web/app/login", img: "https://i.imgur.com/JriFowa.png" },
+    { type:"img", name: "Portale Applicazioni RFI", url: "https://portalerfi.rfi.it/irj/portal/intranet/", img: "https://i.imgur.com/PSgIrnv.png" },
+    { type:"img", name: "e-POD", url: "https://epodweb.rfi.it/ePod.WebClients.Docs.Blazor/", img: "https://i.imgur.com/CjpHQet.png" },
+    { type:"img", name: "Portale Materiale Didattico", url: "https://gruppofsitaliane.sharepoint.com/sites/PortaleMaterialeDidatticoDPR-RFI", img: "https://i.imgur.com/QZNHAqF.png" },
+    { type:"img", name: "FORMS", url: "https://forms.office.com/Pages/DesignPageV2.aspx?origin=shell", img: "https://i.imgur.com/uzVUzLa.png" },
+    { type:"img", name: "PIC WEB", url: "https://picweb.rfi.it/", img: "https://i.imgur.com/j5tAPXD.png" },
+    { type:"img", name: "Registro attività Eser. Infrastrutture", url: "https://forms.office.com/pages/responsepage.aspx?id=R2WKTJpFdUuj3PZu_j6cThC4TCHOd_1DhP6jwPv635RUNDRKMERXU1lLME5aRDJBSTlPQlBDSkNWUC4u&route=shorturl", img: "https://i.imgur.com/ubKpZRd.png" },
+    { type:"img", name: "Procedure", url: "https://drive.google.com/drive/folders/12jus0AHB91Ow7EGUr0l_TNmbgpDG3i7d?usp=sharing", img: "https://i.imgur.com/Y8w5Hct.png" },
+    { type:"text", name: "FCL/C.T.", url: "https://normativaesercizio.rfi.it/NormativaEsercizio/" }
+];
+
+const container = document.getElementById("links");
+
+function renderGrid(filteredLinks = links) {
+    container.innerHTML = "";
+    filteredLinks.forEach(link => {
+        const a = document.createElement("a");
+        a.href = link.url;
+        a.target = "_blank";
+        a.className = "link-card";
+
+        if(link.type === "img") {
+            a.innerHTML = `<div class="img-wrapper"><img src="${link.img}" alt="${link.name}" onerror="this.parentElement.style.display='none'"></div><span>${link.name}</span>`;
+        } else {
+            a.innerHTML = `<i class="fas fa-file-alt" style="font-size: 30px; margin-bottom: 15px; color: #0099ff;"></i><span>${link.name}</span>`;
+        }
+        container.appendChild(a);
+    });
+}
+
+function filterLinks() {
+    const term = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = links.filter(l => l.name.toLowerCase().includes(term));
+    renderGrid(filtered);
+}
+
+renderGrid();
+</script>
+</body>
+</html>
