@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +6,6 @@
     <title>Dashboard LVU4</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* --- Variabili per la NUOVA GRAFICA --- */
         :root {
             --primary-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             --hover-gradient: linear-gradient(135deg, #203a43, #2c5364, #0f2027);
@@ -32,32 +31,32 @@
             padding-bottom: 100px;
         }
 
+        /* --- HEADER ORIGINALE --- */
         header {
-            padding: 30px 0 20px 0;
+            padding: 30px 0 10px 0;
             text-align: center;
             width: 100%;
+            flex-shrink: 0;
         }
 
-        /* --- HEADER ORIGINALE (Logo grande e titolo grassetto) --- */
         header img {
-            max-width: 350px; /* Dimensione originale */
+            max-width: 350px;
             height: auto;
         }
 
         h1 {
-            font-size: clamp(22px, 4vw, 32px);
-            margin-top: 30px;
-            font-weight: bold; /* Grassetto originale */
-            letter-spacing: 1px; /* Spaziatura originale */
+            font-size: clamp(20px, 3vw, 32px);
+            margin-top: 50px;
             color: #fff;
+            letter-spacing: 1px;
+            font-weight: bold;
         }
 
-        /* --- Barra di ricerca --- */
+        /* --- BARRA DI RICERCA (Dalla 1° proposta) --- */
         .search-container {
             width: 90%;
             max-width: 500px;
             margin-bottom: 40px;
-            margin-top: 20px;
         }
 
         #searchInput {
@@ -78,19 +77,19 @@
             background: rgba(255,255,255,0.15);
         }
 
+        /* --- GRIGLIA SPAZIOSA (Dalla 1° proposta) --- */
         .grid-container {
             display: grid;
-            width: 95%;
-            max-width: 1600px;
-            gap: 30px;
-            justify-items: center;
-            /* Griglia reattiva ottimizzata */
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            width: 90%;
+            max-width: 1400px;
+            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            justify-content: center;
         }
 
-        /* --- NUOVA GRAFICA DELLE CARD --- */
+        /* --- CARD (Dalla 1° proposta) --- */
         .link-card {
-            border-radius: 18px; /* Arrotondamento moderno */
+            border-radius: 18px;
             text-decoration: none;
             color: var(--text-white);
             display: flex;
@@ -98,32 +97,29 @@
             align-items: center;
             justify-content: center;
             padding: 15px;
-            width: 100%;
-            max-width: 220px;
-            aspect-ratio: 1.1;
-            background: var(--primary-gradient); /* Nuovo gradiente */
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Nuova ombra più profonda */
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Transizione fluida */
-            border: 1px solid rgba(255,255,255,0.05); /* Bordo sottile moderno */
+            aspect-ratio: 1; /* Rende le card perfettamente quadrate e omogenee */
+            background: var(--primary-gradient);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.05);
             position: relative;
             overflow: hidden;
         }
 
         .link-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 12px 25px rgba(0, 153, 255, 0.3); /* Ombra luminosa all'hover */
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 153, 255, 0.3);
             background: var(--hover-gradient);
             border-color: rgba(0, 153, 255, 0.5);
         }
 
         .img-wrapper {
-            width: 75%;
-            height: 55%;
+            width: 60%;
+            height: 60%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
-            overflow: hidden;
+            margin-bottom: 12px;
         }
 
         .img-wrapper img {
@@ -138,14 +134,19 @@
         }
 
         .link-card span {
-            font-size: clamp(14px, 2vw, 17px);
+            font-size: 14px;
             font-weight: 500;
             text-align: center;
             line-height: 1.2;
-            padding: 0 5px;
         }
 
-        /* Pulsante Email */
+        /* Tasto testo (leggermente più grande se non c'è immagine) */
+        .link-card.text-only span {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* --- PULSANTE EMAIL (Dalla 1° proposta) --- */
         .email-button {
             position: fixed;
             bottom: 30px;
@@ -153,7 +154,7 @@
             transform: translateX(-50%);
             padding: 15px 30px;
             color: #fff;
-            background: var(--accent-color);
+            background: #0078d4;
             border: none;
             border-radius: 50px;
             font-size: 15px;
@@ -163,14 +164,12 @@
             z-index: 1000;
             transition: all 0.3s;
             white-space: nowrap;
-            display: flex;
-            align-items: center;
         }
 
         .email-button:hover {
-            background: #007bbd;
+            background: #005a9e;
             transform: translateX(-50%) translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 153, 255, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 120, 212, 0.4);
         }
 
         .signature {
@@ -187,8 +186,11 @@
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
             }
-            header img { max-width: 280px; }
-            .email-button { bottom: 20px; padding: 12px 24px; }
+            .email-button {
+                bottom: 20px;
+                padding: 12px 24px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -206,10 +208,10 @@
 <div class="grid-container" id="links"></div>
 
 <a href="mailto:d.lazzerini@rfi.it?subject=Aggiungi%20Link&body=Ciao%20Dimitri,%20potresti%20aggiungere%20il%20Link%20per" class="email-button">
-    <i class="fas fa-plus" style="margin-right: 10px;"></i> Se vuoi aggiungere un Link premi qua
+    Se vuoi aggiungere un Link premi qua
 </a>
 
-<div class="signature">Created by Lazzerini Dimitri</div>
+<div class="signature">created by Lazzerini Dimitri</div>
 
 <script>
 const links = [
@@ -242,13 +244,12 @@ function renderGrid(filteredLinks = links) {
         const a = document.createElement("a");
         a.href = link.url;
         a.target = "_blank";
-        a.className = "link-card";
 
         if(link.type === "img") {
-            // Se c'è l'immagine, la mostra con la nuova grafica
+            a.className = "link-card";
             a.innerHTML = `<div class="img-wrapper"><img src="${link.img}" alt="${link.name}" onerror="this.parentElement.style.display='none'"></div><span>${link.name}</span>`;
-        } else if(link.type === "text") {
-            // SOLO TESTO CENTRATO (Ho rimosso l'icona che avevo aggiunto)
+        } else {
+            a.className = "link-card text-only"; // Aggiunta classe per gestire meglio lo stile del solo testo
             a.innerHTML = `<span>${link.name}</span>`;
         }
         
