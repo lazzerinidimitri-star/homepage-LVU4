@@ -18,8 +18,8 @@
             padding: 0;
             min-height: 100%;
             width: 100%;
-            background: #000;
-            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #000; /* sfondo nero */
+            font-family: "Segoe UI", Arial, sans-serif;
             color: var(--text-white);
             overflow-x: hidden;
         }
@@ -32,23 +32,25 @@
         }
 
         header {
-            padding: 40px 20px 20px 20px;
+            padding: 30px 0 10px 0;
             text-align: center;
             width: 100%;
+            flex-shrink: 0;
         }
 
+        /* Ripristinato il logo originale */
         header img {
-            max-width: 280px;
+            max-width: 350px;
             height: auto;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
         }
 
+        /* Ripristinato il titolo originale in grassetto */
         h1 {
-            font-size: clamp(22px, 4vw, 32px);
-            margin-top: 20px;
-            font-weight: 300;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-size: clamp(20px, 3vw, 32px);
+            margin-top: 50px;
+            color: #fff;
+            letter-spacing: 1px;
+            font-weight: bold;
         }
 
         /* Barra di ricerca */
@@ -78,15 +80,15 @@
 
         .grid-container {
             display: grid;
-            width: 90%;
-            max-width: 1400px;
-            gap: 25px;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            justify-content: center;
+            width: 95%;
+            max-width: 1600px;
+            gap: 30px;
+            justify-items: center;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         }
 
         .link-card {
-            border-radius: 18px;
+            border-radius: 16px;
             text-decoration: none;
             color: var(--text-white);
             display: flex;
@@ -94,76 +96,81 @@
             align-items: center;
             justify-content: center;
             padding: 15px;
-            aspect-ratio: 1;
+            aspect-ratio: 1.1;
+            width: 100%;
+            max-width: 220px;
             background: var(--primary-gradient);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255,255,255,0.05);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 153, 255, 0.4);
+            transition: all 0.3s ease;
         }
 
         .link-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0, 153, 255, 0.3);
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 153, 255, 0.5);
             background: var(--hover-gradient);
-            border-color: rgba(0, 153, 255, 0.5);
         }
 
         .img-wrapper {
-            width: 60%;
-            height: 60%;
+            width: 80%;
+            height: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
+            overflow: hidden;
         }
 
         .img-wrapper img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
+            transition: transform 0.25s ease;
+        }
+        
+        .img-wrapper img:hover {
+            transform: scale(1.05);
         }
 
         .link-card span {
-            font-size: 14px;
+            font-size: clamp(14px, 2vw, 18px);
             font-weight: 500;
             text-align: center;
-            line-height: 1.2;
+            color: #fff;
         }
 
-        /* Pulsante Email */
+        /* Pulsante Email Ripristinato */
         .email-button {
             position: fixed;
-            bottom: 30px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 15px 30px;
+            padding: 14px 28px;
             color: #fff;
-            background: #0078d4;
+            background: var(--primary-gradient);
             border: none;
-            border-radius: 50px;
-            font-size: 15px;
+            border-radius: 14px;
+            font-size: clamp(16px, 2vw, 20px);
             font-weight: 600;
             text-decoration: none;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 15px rgba(0, 153, 255, 0.4);
             z-index: 1000;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             white-space: nowrap;
         }
 
         .email-button:hover {
-            background: #005a9e;
-            transform: translateX(-50%) translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 120, 212, 0.4);
+            transform: translateX(-50%) translateY(-4px) scale(1.04);
+            box-shadow: 0 6px 20px rgba(0, 153, 255, 0.5);
+            background: var(--hover-gradient);
         }
 
         .signature {
             position: fixed;
-            bottom: 10px;
-            right: 15px;
-            font-size: 11px;
-            color: #666;
+            bottom: 5px;
+            right: 10px;
+            font-size: 12px;
+            color: #aaa;
+            font-style: italic;
             z-index: 999;
         }
 
@@ -172,8 +179,11 @@
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
             }
-            header { padding: 20px; }
-            h1 { margin-bottom: 20px; }
+            .email-button {
+                bottom: 10px;
+                padding: 12px 24px;
+                font-size: clamp(14px, 4vw, 18px);
+            }
         }
     </style>
 </head>
@@ -191,10 +201,10 @@
 <div class="grid-container" id="links"></div>
 
 <a href="mailto:d.lazzerini@rfi.it?subject=Aggiungi%20Link&body=Ciao%20Dimitri,%20potresti%20aggiungere%20il%20Link%20per" class="email-button">
-    <i class="fas fa-plus" style="margin-right: 8px;"></i> Proponi nuovo Link
+    Se vuoi aggiungere un Link premi qua
 </a>
 
-<div class="signature">Created by Lazzerini Dimitri</div>
+<div class="signature">created by Lazzerini Dimitri</div>
 
 <script>
 const links = [
@@ -230,10 +240,13 @@ function renderGrid(filteredLinks = links) {
         a.className = "link-card";
 
         if(link.type === "img") {
+            // Se c'è l'immagine, la mostra
             a.innerHTML = `<div class="img-wrapper"><img src="${link.img}" alt="${link.name}" onerror="this.parentElement.style.display='none'"></div><span>${link.name}</span>`;
-        } else {
-            a.innerHTML = `<i class="fas fa-file-alt" style="font-size: 30px; margin-bottom: 15px; color: #0099ff;"></i><span>${link.name}</span>`;
+        } else if(link.type === "text") {
+            // Ripristinato: solo testo centrato, nessuna icona
+            a.innerHTML = `<span>${link.name}</span>`;
         }
+        
         container.appendChild(a);
     });
 }
