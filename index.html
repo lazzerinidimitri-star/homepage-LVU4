@@ -6,6 +6,7 @@
     <title>Dashboard LVU4</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
+        /* --- Variabili per la NUOVA GRAFICA --- */
         :root {
             --primary-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             --hover-gradient: linear-gradient(135deg, #203a43, #2c5364, #0f2027);
@@ -18,8 +19,8 @@
             padding: 0;
             min-height: 100%;
             width: 100%;
-            background: #000; /* sfondo nero */
-            font-family: "Segoe UI", Arial, sans-serif;
+            background: #000;
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: var(--text-white);
             overflow-x: hidden;
         }
@@ -32,32 +33,31 @@
         }
 
         header {
-            padding: 30px 0 10px 0;
+            padding: 30px 0 20px 0;
             text-align: center;
             width: 100%;
-            flex-shrink: 0;
         }
 
-        /* Ripristinato il logo originale */
+        /* --- HEADER ORIGINALE (Logo grande e titolo grassetto) --- */
         header img {
-            max-width: 350px;
+            max-width: 350px; /* Dimensione originale */
             height: auto;
         }
 
-        /* Ripristinato il titolo originale in grassetto */
         h1 {
-            font-size: clamp(20px, 3vw, 32px);
-            margin-top: 50px;
+            font-size: clamp(22px, 4vw, 32px);
+            margin-top: 30px;
+            font-weight: bold; /* Grassetto originale */
+            letter-spacing: 1px; /* Spaziatura originale */
             color: #fff;
-            letter-spacing: 1px;
-            font-weight: bold;
         }
 
-        /* Barra di ricerca */
+        /* --- Barra di ricerca --- */
         .search-container {
             width: 90%;
             max-width: 500px;
             margin-bottom: 40px;
+            margin-top: 20px;
         }
 
         #searchInput {
@@ -84,11 +84,13 @@
             max-width: 1600px;
             gap: 30px;
             justify-items: center;
+            /* Griglia reattiva ottimizzata */
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         }
 
+        /* --- NUOVA GRAFICA DELLE CARD --- */
         .link-card {
-            border-radius: 16px;
+            border-radius: 18px; /* Arrotondamento moderno */
             text-decoration: none;
             color: var(--text-white);
             display: flex;
@@ -96,23 +98,27 @@
             align-items: center;
             justify-content: center;
             padding: 15px;
-            aspect-ratio: 1.1;
             width: 100%;
             max-width: 220px;
-            background: var(--primary-gradient);
-            box-shadow: 0 4px 15px rgba(0, 153, 255, 0.4);
-            transition: all 0.3s ease;
+            aspect-ratio: 1.1;
+            background: var(--primary-gradient); /* Nuovo gradiente */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Nuova ombra più profonda */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Transizione fluida */
+            border: 1px solid rgba(255,255,255,0.05); /* Bordo sottile moderno */
+            position: relative;
+            overflow: hidden;
         }
 
         .link-card:hover {
-            transform: translateY(-6px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 153, 255, 0.5);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(0, 153, 255, 0.3); /* Ombra luminosa all'hover */
             background: var(--hover-gradient);
+            border-color: rgba(0, 153, 255, 0.5);
         }
 
         .img-wrapper {
-            width: 80%;
-            height: 50%;
+            width: 75%;
+            height: 55%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -124,53 +130,55 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            transition: transform 0.25s ease;
+            transition: transform 0.3s ease;
         }
         
-        .img-wrapper img:hover {
-            transform: scale(1.05);
+        .link-card:hover .img-wrapper img {
+            transform: scale(1.08);
         }
 
         .link-card span {
-            font-size: clamp(14px, 2vw, 18px);
+            font-size: clamp(14px, 2vw, 17px);
             font-weight: 500;
             text-align: center;
-            color: #fff;
+            line-height: 1.2;
+            padding: 0 5px;
         }
 
-        /* Pulsante Email Ripristinato */
+        /* Pulsante Email */
         .email-button {
             position: fixed;
-            bottom: 20px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 14px 28px;
+            padding: 15px 30px;
             color: #fff;
-            background: var(--primary-gradient);
+            background: var(--accent-color);
             border: none;
-            border-radius: 14px;
-            font-size: clamp(16px, 2vw, 20px);
+            border-radius: 50px;
+            font-size: 15px;
             font-weight: 600;
             text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0, 153, 255, 0.4);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
             z-index: 1000;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             white-space: nowrap;
+            display: flex;
+            align-items: center;
         }
 
         .email-button:hover {
-            transform: translateX(-50%) translateY(-4px) scale(1.04);
-            box-shadow: 0 6px 20px rgba(0, 153, 255, 0.5);
-            background: var(--hover-gradient);
+            background: #007bbd;
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 153, 255, 0.4);
         }
 
         .signature {
             position: fixed;
-            bottom: 5px;
-            right: 10px;
-            font-size: 12px;
-            color: #aaa;
-            font-style: italic;
+            bottom: 10px;
+            right: 15px;
+            font-size: 11px;
+            color: #666;
             z-index: 999;
         }
 
@@ -179,11 +187,8 @@
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
             }
-            .email-button {
-                bottom: 10px;
-                padding: 12px 24px;
-                font-size: clamp(14px, 4vw, 18px);
-            }
+            header img { max-width: 280px; }
+            .email-button { bottom: 20px; padding: 12px 24px; }
         }
     </style>
 </head>
@@ -201,10 +206,10 @@
 <div class="grid-container" id="links"></div>
 
 <a href="mailto:d.lazzerini@rfi.it?subject=Aggiungi%20Link&body=Ciao%20Dimitri,%20potresti%20aggiungere%20il%20Link%20per" class="email-button">
-    Se vuoi aggiungere un Link premi qua
+    <i class="fas fa-plus" style="margin-right: 10px;"></i> Se vuoi aggiungere un Link premi qua
 </a>
 
-<div class="signature">created by Lazzerini Dimitri</div>
+<div class="signature">Created by Lazzerini Dimitri</div>
 
 <script>
 const links = [
@@ -240,10 +245,10 @@ function renderGrid(filteredLinks = links) {
         a.className = "link-card";
 
         if(link.type === "img") {
-            // Se c'è l'immagine, la mostra
+            // Se c'è l'immagine, la mostra con la nuova grafica
             a.innerHTML = `<div class="img-wrapper"><img src="${link.img}" alt="${link.name}" onerror="this.parentElement.style.display='none'"></div><span>${link.name}</span>`;
         } else if(link.type === "text") {
-            // Ripristinato: solo testo centrato, nessuna icona
+            // SOLO TESTO CENTRATO (Ho rimosso l'icona che avevo aggiunto)
             a.innerHTML = `<span>${link.name}</span>`;
         }
         
