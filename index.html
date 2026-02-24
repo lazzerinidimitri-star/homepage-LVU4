@@ -4,106 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard LVU4</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f2027">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/ZYChfzF.png"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
     <style>
+        /* --- VARIABILI GLOBALI (Tema Scuro di Default) --- */
         :root {
+            --bg-color: #000000;
             --primary-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             --hover-gradient: linear-gradient(135deg, #203a43, #2c5364, #0f2027);
             --accent-color: #0099ff;
-            --text-white: #ffffff;
+            --text-color: #ffffff;
+            --card-border: rgba(255,255,255,0.05);
+            --search-bg: rgba(255,255,255,0.1);
+            --search-border: #444;
         }
+
+        /* --- TEMA CHIARO --- */
+        body.light-mode {
+            --bg-color: #f4f7f6;
+            --primary-gradient: linear-gradient(135deg, #ffffff, #e6e9f0);
+            --hover-gradient: linear-gradient(135deg, #f0f2f5, #ffffff);
+            --accent-color: #0078d4;
+            --text-color: #333333;
+            --card-border: rgba(0,0,0,0.1);
+            --search-bg: rgba(0,0,0,0.05);
+            --search-border: #ccc;
+        }
+
+        /* --- SCROLLBAR PERSONALIZZATA --- */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #005a9e; }
 
         html, body {
-            margin: 0;
-            padding: 0;
-            min-height: 100%;
-            width: 100%;
-            background: #000;
+            margin: 0; padding: 0; min-height: 100%; width: 100%;
+            background: var(--bg-color);
             font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: var(--text-white);
+            color: var(--text-color);
             overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease; /* Transizione morbida tema */
         }
 
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 100px;
-        }
+        body { display: flex; flex-direction: column; align-items: center; padding-bottom: 100px; }
 
-        /* --- HEADER ORIGINALE --- */
-        header {
-            padding: 30px 0 10px 0;
-            text-align: center;
-            width: 100%;
-            flex-shrink: 0;
+        /* Tasto Toggle Tema */
+        .theme-toggle {
+            position: absolute; top: 20px; right: 25px;
+            background: none; border: none;
+            color: var(--text-color); font-size: 24px;
+            cursor: pointer; transition: transform 0.3s; z-index: 1000;
         }
+        .theme-toggle:hover { transform: scale(1.1) rotate(15deg); color: var(--accent-color); }
 
-        header img {
-            max-width: 350px;
-            height: auto;
-        }
+        header { padding: 30px 0 10px 0; text-align: center; width: 100%; flex-shrink: 0; }
+        header img { max-width: 350px; height: auto; }
+        h1 { font-size: clamp(20px, 3vw, 32px); margin-top: 50px; color: var(--text-color); letter-spacing: 1px; font-weight: bold; }
 
-        h1 {
-            font-size: clamp(20px, 3vw, 32px);
-            margin-top: 50px;
-            color: #fff;
-            letter-spacing: 1px;
-            font-weight: bold;
-        }
-
-        /* --- BARRA DI RICERCA (Dalla 1° proposta) --- */
-        .search-container {
-            width: 90%;
-            max-width: 500px;
-            margin-bottom: 40px;
-        }
-
+        /* Barra ricerca */
+        .search-container { width: 90%; max-width: 500px; margin-bottom: 40px; }
         #searchInput {
-            width: 100%;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 1px solid #444;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s;
+            width: 100%; padding: 12px 20px; border-radius: 25px;
+            border: 1px solid var(--search-border);
+            background: var(--search-bg); color: var(--text-color);
+            font-size: 16px; outline: none; transition: all 0.3s;
         }
+        #searchInput::placeholder { color: gray; }
+        #searchInput:focus { border-color: var(--accent-color); box-shadow: 0 0 15px rgba(0, 153, 255, 0.3); }
 
-        #searchInput:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(0, 153, 255, 0.3);
-            background: rgba(255,255,255,0.15);
-        }
-
-        /* --- GRIGLIA SPAZIOSA (Dalla 1° proposta) --- */
+        /* Griglia */
         .grid-container {
-            display: grid;
-            width: 90%;
-            max-width: 1400px;
-            gap: 25px;
+            display: grid; width: 90%; max-width: 1400px; gap: 25px;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             justify-content: center;
         }
 
-        /* --- CARD (Dalla 1° proposta) --- */
+        /* Animazione di caricamento (Skeleton/Cascade) */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card */
         .link-card {
-            border-radius: 18px;
-            text-decoration: none;
-            color: var(--text-white);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            aspect-ratio: 1; /* Rende le card perfettamente quadrate e omogenee */
+            border-radius: 18px; text-decoration: none; color: var(--text-color);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 15px; aspect-ratio: 1; 
             background: var(--primary-gradient);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255,255,255,0.05);
-            position: relative;
-            overflow: hidden;
+            border: 1px solid var(--card-border);
+            position: relative; overflow: hidden;
+            
+            /* Impostazioni per l'animazione */
+            opacity: 0; 
+            animation: fadeUp 0.6s ease forwards;
         }
 
         .link-card:hover {
@@ -113,92 +111,40 @@
             border-color: rgba(0, 153, 255, 0.5);
         }
 
-        .img-wrapper {
-            width: 60%;
-            height: 60%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 12px;
-        }
+        .img-wrapper { width: 60%; height: 60%; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+        .img-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.3s ease; }
+        .link-card:hover .img-wrapper img { transform: scale(1.08); }
+        .link-card span { font-size: 14px; font-weight: 500; text-align: center; line-height: 1.2; }
+        .link-card.text-only span { font-size: 16px; font-weight: 600; }
 
-        .img-wrapper img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            transition: transform 0.3s ease;
-        }
-        
-        .link-card:hover .img-wrapper img {
-            transform: scale(1.08);
-        }
-
-        .link-card span {
-            font-size: 14px;
-            font-weight: 500;
-            text-align: center;
-            line-height: 1.2;
-        }
-
-        /* Tasto testo (leggermente più grande se non c'è immagine) */
-        .link-card.text-only span {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        /* --- PULSANTE EMAIL (Dalla 1° proposta) --- */
+        /* Pulsante Email */
         .email-button {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 15px 30px;
-            color: #fff;
-            background: #0078d4;
-            border: none;
-            border-radius: 50px;
-            font-size: 15px;
-            font-weight: 600;
-            text-decoration: none;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-            z-index: 1000;
-            transition: all 0.3s;
-            white-space: nowrap;
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            padding: 15px 30px; color: #fff; background: #0078d4;
+            border: none; border-radius: 50px; font-size: 15px; font-weight: 600;
+            text-decoration: none; box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            z-index: 1000; transition: all 0.3s; white-space: nowrap;
         }
-
-        .email-button:hover {
-            background: #005a9e;
-            transform: translateX(-50%) translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 120, 212, 0.4);
-        }
-
-        .signature {
-            position: fixed;
-            bottom: 10px;
-            right: 15px;
-            font-size: 11px;
-            color: #666;
-            z-index: 999;
-        }
+        .email-button:hover { background: #005a9e; transform: translateX(-50%) translateY(-3px); box-shadow: 0 8px 25px rgba(0, 120, 212, 0.4); }
+        
+        .signature { position: fixed; bottom: 10px; right: 15px; font-size: 11px; color: #666; z-index: 999; }
 
         @media (max-width: 600px) {
-            .grid-container {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            .email-button {
-                bottom: 20px;
-                padding: 12px 24px;
-                font-size: 14px;
-            }
+            .grid-container { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .email-button { bottom: 20px; padding: 12px 24px; font-size: 14px; }
+            .theme-toggle { top: 15px; right: 15px; font-size: 20px; }
         }
     </style>
 </head>
 <body>
 
+<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Cambia Tema">
+    <i class="fas fa-sun" id="themeIcon"></i>
+</button>
+
 <header>
-    <img src="rfi.jpg" alt="Logo">
-    <h1>Home Page LVU4</h1>
+  <img src="https://i.imgur.com/ZYChfzF.png" alt="Logo">
+   <h1>Home Page LVU4</h1>
 </header>
 
 <div class="search-container">
@@ -214,43 +160,68 @@
 <div class="signature">created by Lazzerini Dimitri</div>
 
 <script>
+// --- GESTIONE TEMA CHIARO/SCURO ---
+const body = document.body;
+const themeIcon = document.getElementById("themeIcon");
+
+// Controlla se c'è un tema salvato nel browser
+if(localStorage.getItem("theme") === "light") {
+    body.classList.add("light-mode");
+    themeIcon.classList.replace("fa-sun", "fa-moon");
+}
+
+function toggleTheme() {
+    body.classList.toggle("light-mode");
+    if(body.classList.contains("light-mode")) {
+        localStorage.setItem("theme", "light");
+        themeIcon.classList.replace("fa-sun", "fa-moon");
+    } else {
+        localStorage.setItem("theme", "dark");
+        themeIcon.classList.replace("fa-moon", "fa-sun");
+    }
+}
+
+// --- DATI LINK ---
 const links = [
-    { type:"text", name: "Tabellini delle Curve", url: "https://gruppofsitaliane.sharepoint.com/sites/RFI16/doit-fi/Documenti%20condivisi/Forms/AllItems.aspx?id=%2Fsites%2FRFI16%2Fdoit%2Dfi%2FDocumenti%20condivisi%2FTABELLINI%20CURVE%20DOIT%20FIRENZE&viewid=f52bc9fb%2D26da%2D4022%2Db6af%2D73a120efed32&csf=1&web=1&e=lUfiDU&siteid=%7B9F710921%2D6F38%2D4CD6%2DBFC6%2D5C366FF40A08%7D&webid=%7B4ABB3243%2D3901%2D4B72%2DBD73%2D06CEB09B651D%7D&uniqueid=%7BC826F84C%2DC90A%2D45AB%2D8084%2DD5C0D700CAD3%7D&FolderCTID=0x0120007749C7D629B18545A6DB9F573876ACA5" },
-    { type:"text", name: "Piani Schematici", url: "https://gruppofsitaliane.sharepoint.com/sites/RFI3/dtp-fi/firenze/Forms/AllItems.aspx?csf=1&web=1&e=MCcd6K&CID=354b53a0%2D30d1%2D42a2%2Db01d%2Dec71940dd4bb&FolderCTID=0x01200038E194A629A23440B3142FFB9ACED2F5&id=%2Fsites%2FRFI3%2Fdtp%2Dfi%2Ffirenze%2FDOIT%20FI%2FFunzionale%20CCS" },
-    { type:"text", name: "Profili Linee DOIT FI", url: "https://gruppofsitaliane.sharepoint.com/sites/RFI16/doit-fi/Documenti%20condivisi/Forms/AllItems.aspx?id=%2Fsites%2FRFI16%2Fdoit%2Dfi%2FDocumenti%20condivisi%2FPROFILI%20LINEE%20DOIT%20FI&viewid=f52bc9fb%2D26da%2D4022%2Db6af%2D73a120efed32&csf=1&web=1&e=lUfiDU&siteid=%7B9F710921%2D6F38%2D4CD6%2DBFC6%2D5C366FF40A08%7D&webid=%7B4ABB3243%2D3901%2D4B72%2DBD73%2D06CEB09B651D%7D&uniqueid=%7BC826F84C%2DC90A%2D45AB%2D8084%2DD5C0D700CAD3%7D&FolderCTID=0x0120007749C7D629B18545A6DB9F573876ACA5" },
-    { type:"text", name: "Planimetrie DOIT FI", url: "https://gruppofsitaliane.sharepoint.com/sites/RFI16/doit-fi/Documenti%20condivisi/Forms/AllItems.aspx?id=%2Fsites%2FRFI16%2Fdoit%2Dfi%2FDocumenti%20condivisi%2FPLANIMETRIE%20DOIT%20FIRENZE&viewid=f52bc9fb%2D26da%2D4022%2Db6af%2D73a120efed32&csf=1&web=1&e=lUfiDU&siteid=%7B9F710921%2D6F38%2D4CD6%2DBFC6%2D5C366FF40A08%7D&webid=%7B4ABB3243%2D3901%2D4B72%2DBD73%2D06CEB09B651D%7D&uniqueid=%7BC826F84C%2DC90A%2D45AB%2D8084%2DD5C0D700CAD3%7D&FolderCTID=0x0120007749C7D629B18545A6DB9F573876ACA5" },
-    { type:"img", name: "WE", url: "https://gruppofsitaliane.sharepoint.com/sites/we2/", img: "mywe.png" },
-    { type:"img", name: "OneDrive", url: "https://gruppofsitaliane-my.sharepoint.com/my", img: "one.png" },
-    { type:"img", name: "FS-Sign", url: "https://gosign.gruppofs.it/home", img: "sign.png" },
-    { type:"img", name: "IMAN", url: "https://iman.rfi.it/rfiwfm/w/LoginServlet", img: "iman.png" },
-    { type:"img", name: "SAP", url: "https://inreteese-wd.rfi.it/sap/bc/gui/sap/its/webgui?sap-theme=sap_corbu#?sap-client=111", img: "sap.png" },
-    { type:"img", name: "RUMO", url: "https://portalerfi.rfi.it/cube.eng~rumoweb/dispatch?actionName=homePage", img: "rumo.png" },
-    { type:"img", name: "Plinio", url: "http://plinio.rfi.it/waysafety-web/app/login", img: "plinio.png" },
-    { type:"img", name: "Portale Applicazioni RFI", url: "https://portalerfi.rfi.it/irj/portal/intranet/", img: "applicazioni.png" },
-    { type:"img", name: "e-POD", url: "https://epodweb.rfi.it/ePod.WebClients.Docs.Blazor/", img: "epod.png" },
-    { type:"img", name: "Portale Materiale Didattico", url: "https://gruppofsitaliane.sharepoint.com/sites/PortaleMaterialeDidatticoDPR-RFI", img: "didattico.png" },
-    { type:"img", name: "FORMS", url: "https://forms.office.com/Pages/DesignPageV2.aspx?origin=shell", img: "forms.png" },
-    { type:"img", name: "PIC WEB", url: "https://picweb.rfi.it/", img: "pic.png" },
-    { type:"img", name: "Registro attività Eser. Infrastrutture", url: "https://forms.office.com/pages/responsepage.aspx?id=R2WKTJpFdUuj3PZu_j6cThC4TCHOd_1DhP6jwPv635RUNDRKMERXU1lLME5aRDJBSTlPQlBDSkNWUC4u&route=shorturl", img: "processo.png" },
-    { type:"img", name: "Procedure", url: "https://drive.google.com/drive/folders/12jus0AHB91Ow7EGUr0l_TNmbgpDG3i7d", img: "procedure.jpg" },
-    { type:"img", name: "Scadenziario", url: "https://scadenziario-lvu4.web.app", img: "scadenziario.png" },
-    { type:"text", name: "FCL/C.T.", url: "https://normativaesercizio.rfi.it/NormativaEsercizio/" }
+ { type:"text", name: "Tabellini delle Curve", url: "https://gruppofsitaliane.sharepoint.com/sites/RFI16/doit-fi/Documenti%20condivisi/Forms/AllItems.aspx?id=...", color:"#ff5733" },
+ { type:"text", name: "Piani Schematici", url: "https://gruppofsitaliane.sharepoint.com/sites/RFI3/dtp-fi/firenze/Forms/AllItems.aspx?csf=1&web=1&e=MCcd6K...", color:"#ff5733" },
+  { type:"text", name: "Profili Linee DOIT FI", url: "https://gruppofsitaliane.sharepoint.com/sites/RFI16/doit-fi/Documenti%20condivisi/Forms/AllItems.aspx...", color:"#ff5733" },
+ { type:"text", name: "Planimetrie DOIT FI", url: "https://gruppofsitaliane.sharepoint.com/sites/RFI16/doit-fi/Documenti%20condivisi/Forms/AllItems.aspx...", color:"#ff5733" },
+ { type:"img", name: "WE", url: "https://gruppofsitaliane.sharepoint.com/sites/we2/", img: "https://i.imgur.com/62N0jNK.png" },
+ { type:"img", name: "OneDrive", url: "https://gruppofsitaliane-my.sharepoint.com/my", img: "https://i.imgur.com/g2I1Q3X.png" },
+ { type:"img", name: "FS-Sign", url: "https://gosign.gruppofs.it/home", img: "https://i.imgur.com/uRZFz0U.png" },
+ { type:"img", name: "IMAN", url: "https://iman.rfi.it/rfiwfm/w/LoginServlet", img: "https://i.imgur.com/sed8XcC.png" },
+ { type:"img", name: "SAP", url: "https://inreteese-wd.rfi.it/sap/bc/gui/sap/its/webgui?sap-theme=sap_corbu#?sap-client=111", img: "https://i.imgur.com/cQyCRsP.png" },
+ { type:"img", name: "RUMO", url: "https://portalerfi.rfi.it/cube.eng~rumoweb/dispatch?actionName=homePage", img: "https://i.imgur.com/UaMvWaJ.png" },
+ { type:"img", name: "Plinio", url: "http://plinio.rfi.it/waysafety-web/app/login", img: "https://i.imgur.com/JriFowa.png" },
+ { type:"img", name: "Portale Applicazioni RFI", url: "https://portalerfi.rfi.it/irj/portal/intranet/", img: "https://i.imgur.com/PSgIrnv.png" },
+ { type:"img", name: "e-POD", url: "https://epodweb.rfi.it/ePod.WebClients.Docs.Blazor/", img: "https://i.imgur.com/CjpHQet.png" },
+ { type:"img", name: "Portale Materiale Didattico", url: "https://gruppofsitaliane.sharepoint.com/sites/PortaleMaterialeDidatticoDPR-RFI", img: "https://i.imgur.com/QZNHAqF.png" },
+ { type:"img", name: "FORMS", url: "https://forms.office.com/Pages/DesignPageV2.aspx?origin=shell", img: "https://i.imgur.com/uzVUzLa.png" },
+ { type:"img", name: "PIC WEB", url: "https://picweb.rfi.it/", img: "https://i.imgur.com/j5tAPXD.png" },
+ { type:"img", name: "Registro attività Eser. Infrastrutture", url: "https://forms.office.com/pages/responsepage.aspx?id=R2WKTJpFdUuj3PZu_...", img: "https://i.imgur.com/ubKpZRd.png" },
+ { type:"img", name: "Procedure", url: "https://drive.google.com/drive/folders/12jus0AHB91Ow7EGUr0l_TNmbgpDG3i7d?usp=sharing", img: "https://i.imgur.com/Y8w5Hct.png" },
+ { type:"img", name: "Scadenziario", url: "https://scadenziario-lvu4.web.app", img: "https://i.imgur.com/yi5cJ12.png" },
+ { type:"text", name: "FCL/C.T.", url: "https://normativaesercizio.rfi.it/NormativaEsercizio/", color:"#ff5733" }
 ];
 
 const container = document.getElementById("links");
 
 function renderGrid(filteredLinks = links) {
     container.innerHTML = "";
-    filteredLinks.forEach(link => {
+    filteredLinks.forEach((link, index) => {
         const a = document.createElement("a");
         a.href = link.url;
         a.target = "_blank";
+        
+        // Ritardo a scaglioni per l'effetto caricamento a cascata (0.05s tra una card e l'altra)
+        a.style.animationDelay = `${index * 0.05}s`;
 
         if(link.type === "img") {
             a.className = "link-card";
             a.innerHTML = `<div class="img-wrapper"><img src="${link.img}" alt="${link.name}" onerror="this.parentElement.style.display='none'"></div><span>${link.name}</span>`;
         } else {
-            a.className = "link-card text-only"; // Aggiunta classe per gestire meglio lo stile del solo testo
+            a.className = "link-card text-only"; 
             a.innerHTML = `<span>${link.name}</span>`;
         }
         
@@ -265,6 +236,15 @@ function filterLinks() {
 }
 
 renderGrid();
+
+// --- REGISTRAZIONE SERVICE WORKER (Per la PWA) ---
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker registrato con successo.', reg))
+            .catch(err => console.log('Registrazione Service Worker fallita:', err));
+    });
+}
 </script>
 </body>
 </html>
