@@ -135,6 +135,20 @@
             .email-button { bottom: 20px; padding: 12px 24px; font-size: 14px; }
             .theme-toggle { top: 15px; right: 15px; font-size: 20px; }
         }
+        /* Questo serve a rendere fluido il cambio */
+header img {
+    max-width: 350px;
+    height: auto;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Quando siamo in light-mode, se l'immagine ha uno sfondo bianco/sporco, 
+   usiamo un filtro per renderla pulita */
+body.light-mode header img {
+    mix-blend-mode: multiply; /* Fondamentale: fonde il bianco dell'immagine con lo sfondo del sito */
+}
     </style>
 </head>
 <body>
@@ -165,26 +179,26 @@ const body = document.body;
 const themeIcon = document.getElementById("themeIcon");
 const logoImg = document.querySelector("header img");
 
-const logoSfondoNero = "rfi.jpg"; // Il tuo logo originale
-const logoSfondoBianco = "./logo-rfi.jpg"; // 👈 L'immagine scura che mi hai appena mandato
+const logoSfondoNero = "rfi.jpg"; 
+const logoSfondoBianco = "./logo-rfi.jpg"; 
 
 function updateLogo(isLight) {
     logoImg.classList.add("switching");
     
-    // Il "cache buster" forza il browser a scaricare l'immagine fresca
-    const version = "?v=" + new Date().getTime(); 
-
     setTimeout(() => {
         if(isLight) {
-            // Usa l'immagine caricata su GitHub
-            logoImg.src = "./logo-rfi.jpg" + version; 
-            logoImg.style.backgroundColor = "transparent";
+            // Forza il caricamento dell'immagine scura su sfondo bianco
+            logoImg.src = logoSfondoBianco + "?v=" + new Date().getTime();
+            logoImg.style.filter = "none"; 
         } else {
-            // Usa l'immagine Imgur
-            logoImg.src = logoSfondoNero + version;
-            logoImg.style.backgroundColor = "transparent";
+            // Torna al logo originale per il tema scuro
+            logoImg.src = logoSfondoNero + "?v=" + new Date().getTime();
+            logoImg.style.filter = "none";
         }
-        logoImg.onload = () => logoImg.classList.remove("switching");
+        
+        logoImg.onload = () => {
+            logoImg.classList.remove("switching");
+        };
     }, 200);
 }
 
