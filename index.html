@@ -170,13 +170,19 @@ const logoSfondoBianco = "./logo-rfi.jpg"; // 👈 L'immagine scura che mi hai a
 
 function updateLogo(isLight) {
     logoImg.classList.add("switching");
+    
+    // Il "cache buster" forza il browser a scaricare l'immagine fresca
+    const version = "?v=" + new Date().getTime(); 
+
     setTimeout(() => {
         if(isLight) {
-            logoImg.src = logoSfondoBianco;
-            logoImg.style.maxWidth = "350px";
+            // Usa l'immagine caricata su GitHub
+            logoImg.src = "./logo-rfi.jpg" + version; 
+            logoImg.style.backgroundColor = "transparent";
         } else {
-            logoImg.src = logoSfondoNero;
-            logoImg.style.maxWidth = "350px";
+            // Usa l'immagine Imgur
+            logoImg.src = logoSfondoNero + version;
+            logoImg.style.backgroundColor = "transparent";
         }
         logoImg.onload = () => logoImg.classList.remove("switching");
     }, 200);
