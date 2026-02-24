@@ -160,14 +160,33 @@
 <div class="signature">created by Lazzerini Dimitri</div>
 
 <script>
-// --- GESTIONE TEMA CHIARO/SCURO ---
 const body = document.body;
 const themeIcon = document.getElementById("themeIcon");
+const logoImg = document.querySelector("header img");
 
-// Controlla se c'è un tema salvato nel browser
+const logoSfondoNero = "rfi.jpg"; // Il tuo logo originale
+const logoSfondoBianco = "logo-rfi.jpg"; // 👈 L'immagine scura che mi hai appena mandato
+
+function updateLogo(isLight) {
+    logoImg.classList.add("switching");
+    setTimeout(() => {
+        if(isLight) {
+            logoImg.src = logoSfondoBianco;
+            logoImg.style.maxWidth = "350px";
+        } else {
+            logoImg.src = logoSfondoNero;
+            logoImg.style.maxWidth = "350px";
+        }
+        logoImg.onload = () => logoImg.classList.remove("switching");
+    }, 200);
+}
+
 if(localStorage.getItem("theme") === "light") {
     body.classList.add("light-mode");
     themeIcon.classList.replace("fa-sun", "fa-moon");
+    updateLogo(true);
+} else {
+    updateLogo(false);
 }
 
 function toggleTheme() {
@@ -175,9 +194,11 @@ function toggleTheme() {
     if(body.classList.contains("light-mode")) {
         localStorage.setItem("theme", "light");
         themeIcon.classList.replace("fa-sun", "fa-moon");
+        updateLogo(true);
     } else {
         localStorage.setItem("theme", "dark");
         themeIcon.classList.replace("fa-moon", "fa-sun");
+        updateLogo(false);
     }
 }
 
@@ -213,8 +234,6 @@ function renderGrid(filteredLinks = links) {
         const a = document.createElement("a");
         a.href = link.url;
         a.target = "_blank";
-        
-        // Ritardo a scaglioni per l'effetto caricamento a cascata (0.05s tra una card e l'altra)
         a.style.animationDelay = `${index * 0.05}s`;
 
         if(link.type === "img") {
@@ -237,7 +256,6 @@ function filterLinks() {
 
 renderGrid();
 
-// --- REGISTRAZIONE SERVICE WORKER (Per la PWA) ---
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
